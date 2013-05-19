@@ -39,12 +39,22 @@
   " λP"
   nil
   (require 'haskell-cabal)
-  (when (haskell-cabal-find-dir)
-    (message (haskell-cabal-find-dir))
-    (let* ((cabal-bin
-            (if (member "cabal-dev" (directory-files (haskell-cabal-find-dir)))
-                "cabal-dev" "cabal"))
-           (command (format "cd %s; %s install" (haskell-cabal-find-dir) cabal-bin)))
-      (set (make-local-variable 'compile-command) command))))
+  (let ((project-dir (haskell-cabal-find-dir)))
+    (when project-dir
+      (message (concat "cabal directory: " project-dir))
+      (let* ((cabal-dev? (member "cabal-dev" (directory-files project-dir)))
+             (cabal-bin (if cabal-dev? "cabal-dev" "cabal"))
+             (command (format "cd %s; %s install" project-dir cabal-bin)))
+        (set (make-local-variable 'compile-command) command)
+        (when cabal-dev?
+          (let* ((project-name (file-name-nondirectory (directory-file-name project-dir)))
+                 (project-inf-buffer-name (format "haskell – %s" project-name))
+                 (project-inf-command (list "ghci-dev" project-dir))
+                 (message (format "ghci-dev %s" project-dir))
+                 (project-inf-buffer (make-comint project-inf-buffer-name "ghci-dev" nil project-dir)))
+            (set (make-local-variable 'inferior-haskell-buffer) project-inf-buffer)
+            (with-current-buffer project-inf-buffer
+              (inferior-haskell-mode)
+              (run-hooks 'inferior-haskell-mode))))))))
 
 (provide 'haskell-project-mode)

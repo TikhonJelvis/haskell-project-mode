@@ -52,7 +52,9 @@
                  (project-inf-command (list "ghci-dev" project-dir))
                  (message (format "ghci-dev %s" project-dir))
                  (project-inf-buffer (make-comint project-inf-buffer-name "ghci-dev" nil project-dir)))
+            (message (format "cabal-dev: %s" project-name))
             (set (make-local-variable 'inferior-haskell-buffer) project-inf-buffer)
+            (set (make-local-variable 'haskell-program-name) "ghci-dev")
             (with-current-buffer project-inf-buffer
               (inferior-haskell-mode)
               (run-hooks 'inferior-haskell-mode))))))))

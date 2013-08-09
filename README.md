@@ -6,3 +6,12 @@ Currently, the minor mode does two things:
   * Automatically creates a custom inferior Haskell buffer using cabal-dev ghci for any project using cabal-dev.
 
 I've found both features useful, particularly since I've started using cabal-dev more and more.
+
+To install, include the following lines in your `.emacs` file:
+
+    (require 'haskell-project-mode)
+    (add-hook 'haskell-mode-hook 'haskell-project-mode)
+    
+if inferior GHCi buffers are not working properly, adding the following might help:
+
+    (setq inferior-haskell-find-project-root nil)

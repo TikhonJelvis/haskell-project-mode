@@ -22,3 +22,7 @@ First, put `haskell-project-mode.el` into your load-path. Then put the two shell
 Finally, to automatically enable the mode for `.hs` files, add this to your `.emacs`:
 
     (add-hook 'haskell-mode-hook 'haskell-project-mode)
+    
+If inferior GHCi buffers are not working properly, adding the following might help:
+
+    (setq inferior-haskell-find-project-root nil)

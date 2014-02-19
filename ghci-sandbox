@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Launching GHCi in sandbox."
+cd $1 && cabal repl
